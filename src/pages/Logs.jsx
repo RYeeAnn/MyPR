@@ -3,6 +3,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { Container, Row, Col, Form, Button, Card, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
+import trash from '../assets/trash.svg';
 
 export function Logs() {
   const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
@@ -133,7 +134,7 @@ export function Logs() {
       <Navbar logout={logout} isAuthenticated={isAuthenticated} user={user} loginWithRedirect={loginWithRedirect} />
       <Container className="mt-4">
         <Row>
-          <Col>
+          <Col className='d-flex justify-content-center'>
             {isAuthenticated && (
               <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="exercise">
@@ -186,7 +187,9 @@ export function Logs() {
                   {log.exercise}: {log.weight} {log.reps ? `- ${log.reps} reps` : ''}{log.sets ? `- ${log.sets} sets` : ''}
                   <div className="date_delete">
                   {formatDate(log.date)}
-                    <Button variant="danger" onClick={() => handleDelete(log.id)}>Delete</Button>
+                    <div onClick={() => handleDelete(log.id)} style={{ cursor: 'pointer' }}>
+                        <img src={trash} alt="trashcan" style={{ transition: 'transform 0.2s' }} className="delete-icon"/>
+                    </div>
                   </div>
                   </Card.Body>
                 </Card>

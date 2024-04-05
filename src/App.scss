@@ -4,15 +4,10 @@
   flex-grow: 0;
 }
 
-.card-body {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
 .date_delete {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 1rem;
 }
 
@@ -76,4 +71,15 @@
 .workout-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.featured-card {
+  height: 400px; /* Adjust the height as needed */
+}
+
+
+/* Logs.scss */
+
+.delete-icon:hover {
+  transform: scale(1.2); // Scale up the icon on hover
 }

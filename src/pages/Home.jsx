@@ -5,6 +5,9 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import bench from '../assets/bench.jpg'
+import deadlift from '../assets/deadlift.jpg'
+import squat from '../assets/squat.jpg';
 
 export function Home() {
   const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
@@ -55,12 +58,55 @@ export function Home() {
   };
 
   return (
-    <div className="App">
+    <div className="Home">
       <Navbar logout={logout} isAuthenticated={isAuthenticated} user={user} loginWithRedirect={loginWithRedirect} />
       <Container className="mt-4">
         <Row>
           <Col>
             <h1 className="heading">Welcome to MyPR</h1>
+          </Col>
+        </Row>
+
+        <Row className="text-center mb-5">
+          <Col>
+            <h2 className="subheading">Featured Workouts</h2>
+            <div className="featured-workouts">
+              <Row className="justify-content-center">
+                <Col md={4}>
+                  <Card bg="dark" text="white" className="featured-card">
+                    <Card.Img variant="top" src={bench} />
+                    <Card.Body>
+                      <Card.Title>Bench Press</Card.Title>
+                      <Card.Text>
+                        The bench press is a compound exercise that targets the chest, shoulders, and triceps.
+                      </Card.Text>
+                    </Card.Body>
+                  </Card>
+                </Col>
+                <Col md={4}>
+                  <Card bg="dark" text="white" className="featured-card">
+                    <Card.Img variant="top" src={deadlift} />
+                    <Card.Body>
+                      <Card.Title>DeadLift</Card.Title>
+                      <Card.Text>
+                        The deadlift is a full-body exercise that primarily targets the back, glutes, and hamstrings.
+                      </Card.Text>
+                    </Card.Body>
+                  </Card>
+                </Col>
+                <Col md={4}>
+                  <Card bg="dark" text="white" className="featured-card">
+                    <Card.Img variant="top" src={squat} />
+                    <Card.Body>
+                      <Card.Title>Squat</Card.Title>
+                      <Card.Text>
+                        The squat is a compound exercise that targets the quadriceps, hamstrings, glutes, and lower back.
+                      </Card.Text>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
+            </div>
           </Col>
         </Row>
 
@@ -72,12 +118,12 @@ export function Home() {
         </Row>
   
         <Row className='text-center'>
-          <Col>
+          <Col className='mb-5'>
             <h2 className="subheading">Workout Exercises</h2>
             <div className="exercise-list">
-              <Button variant="secondary" size='sm' onClick={() => handleCategoryClick('Push day')} className="category-button">Push day</Button>{' '}
-              <Button variant="secondary" size='sm' onClick={() => handleCategoryClick('Pull day')} className="category-button">Pull day</Button>{' '}
-              <Button variant="secondary" size='sm' onClick={() => handleCategoryClick('Leg day')} className="category-button">Leg day</Button>{' '}
+              <Button variant="secondary" size='lg' onClick={() => handleCategoryClick('Push day')} className="category-button">Push day</Button>{' '}
+              <Button variant="secondary" size='lg' onClick={() => handleCategoryClick('Pull day')} className="category-button">Pull day</Button>{' '}
+              <Button variant="secondary" size='lg' onClick={() => handleCategoryClick('Leg day')} className="category-button">Leg day</Button>{' '}
               {selectedWorkouts.length > 0 && (
                 <div>
                   <h3 className="selected-heading">Selected Workouts:</h3>

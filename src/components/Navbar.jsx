@@ -7,7 +7,7 @@ function NavbarComponent({ logout, isAuthenticated, user, loginWithRedirect }) {
   return (
     <Navbarbs bg="light" expand="lg">
       <Container>
-        <Navbarbs.Brand>MyPR</Navbarbs.Brand>
+        <Navbarbs.Brand><Nav.Link to="/" as={NavLink}>MyPR</Nav.Link></Navbarbs.Brand>
         <Navbarbs.Toggle aria-controls="basic-navbar-nav" />
         <Navbarbs.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
