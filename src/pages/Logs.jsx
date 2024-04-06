@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '../components/Navbar';
 import trash from '../assets/trash.svg';
+import * as XLSX from 'xlsx';
 
 export function Logs() {
   const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
@@ -131,56 +132,84 @@ export function Logs() {
       setErrorMessage('Failed to log PR. Please try again later.');
     }
   };
-  
+
+    const handleExport = () => {
+        const data = logs.map((log) => ({
+          Exercise: log.exercise,
+          Weight: log.weight,
+          Reps: log.reps || '',
+          Sets: log.sets || '',
+          Date: formatDate(log.date),
+        }));
+
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Logs');
+
+    XLSX.writeFile(workbook, 'logs.xlsx');
+  };
 
   return (
     <div className="App">
       <Navbar logout={logout} isAuthenticated={isAuthenticated} user={user} loginWithRedirect={loginWithRedirect} />
       <Container className="mt-4">
+      <Row>
+  <Col>
+    {isAuthenticated && (
+      <Form onSubmit={handleSubmit}>
         <Row>
-          <Col className='d-flex justify-content-center'>
-            {isAuthenticated && (
-              <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="exercise">
-                  <Form.Label>Select Exercise</Form.Label>
-
-                  <Form.Control as="select" value={exercise} onChange={(e) => setExercise(e.target.value)}>
-                    <option value="">Select an exercise</option>
-                    {workoutExercises.map((exercise) => (
-                      <option key={exercise.id} value={exercise.name}>{exercise.name}</option>
-                    ))}
-                  </Form.Control>
-
-                </Form.Group>
-                <Form.Group controlId="weight">
-                  <Form.Label>Enter Weight (lb or kg)</Form.Label>
-                  <Form.Control type="number" value={weight} onChange={(e) => setWeight(e.target.value)} />
-                </Form.Group>
-
-                <Form.Group controlId="reps">
-                  <Form.Label>Reps</Form.Label>
-                  <Form.Control type="number" value={reps} onChange={(e) => setReps(e.target.value)} />
-                </Form.Group>
-                
-                <Form.Group controlId="sets">
-                  <Form.Label>Sets</Form.Label>
-                  <Form.Control type="number" value={sets} onChange={(e) => setSets(e.target.value)} />
-                </Form.Group>
-
-                <Form.Group controlId="date">
-                    <Form.Label>Date</Form.Label>
-                    <Form.Control type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-                </Form.Group>
-
-
-                <Button variant="secondary" type="submit" style={{ marginTop: '1rem '}}>
-                  Log PR
-                </Button>
-
-              </Form>
-            )}
+          {/* Exercise and Weight */}
+          <Col md={6}>
+            <Form.Group controlId="exercise">
+              <Form.Label>Select Exercise</Form.Label>
+              <Form.Control as="select" value={exercise} onChange={(e) => setExercise(e.target.value)}>
+                <option value="">Select an exercise</option>
+                {workoutExercises.map((exercise) => (
+                  <option key={exercise.id} value={exercise.name}>{exercise.name}</option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group controlId="weight">
+              <Form.Label>Enter Weight (lb or kg)</Form.Label>
+              <Form.Control type="number" value={weight} onChange={(e) => setWeight(e.target.value)} />
+            </Form.Group>
           </Col>
         </Row>
+        <Row>
+          {/* Reps and Sets */}
+          <Col md={6}>
+            <Form.Group controlId="reps">
+              <Form.Label>Reps</Form.Label>
+              <Form.Control type="number" value={reps} onChange={(e) => setReps(e.target.value)} />
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group controlId="sets">
+              <Form.Label>Sets</Form.Label>
+              <Form.Control type="number" value={sets} onChange={(e) => setSets(e.target.value)} />
+            </Form.Group>
+          </Col>
+        </Row>
+        <Row>
+          {/* Date */}
+          <Col>
+            <Form.Group controlId="date">
+              <Form.Label>Date</Form.Label>
+              <Form.Control type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+            </Form.Group>
+          </Col>
+        </Row>
+        <Button variant="secondary" type="submit" style={{ marginTop: '1rem '}}>
+          Log PR
+        </Button>
+      </Form>
+    )}
+  </Col>
+</Row>
+
+        
         <Row className="mt-4">
           <Col className='mb-5'>
             <h2>Logged PRs</h2>
@@ -204,7 +233,7 @@ export function Logs() {
 
         <Row>
             <Col className='text-center mb-5'>
-                <Button>Export</Button>
+                <Button onClick={handleExport}>Export</Button>
             </Col>
         </Row>
 
