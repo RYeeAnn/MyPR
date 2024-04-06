@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Container, Row, Col, Form, Button, Card, Alert } from 'react-bootstrap';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '../components/Navbar';
 import trash from '../assets/trash.svg';
 
@@ -83,8 +85,10 @@ export function Logs() {
     try {
       await axios.delete(`http://localhost:3002/api/logs/${logId}`)
       setLogs(logs.filter((log) => log.id !== logId));
+      toast.success("Log deleted successfully");
     } catch (error) {
       console.error('Error deleting log', error);
+      toast.error("Failed to delete log. Please try again later.");
     }
   };
 
@@ -213,6 +217,8 @@ export function Logs() {
         )}
         
       </Container>
+
+      <ToastContainer />
     </div>
   );
 }
