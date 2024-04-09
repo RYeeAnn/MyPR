@@ -13,6 +13,7 @@
     "bootstrap": "^5.3.3",
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "googleapis": "^134.0.0",
     "pg": "^8.11.5",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
