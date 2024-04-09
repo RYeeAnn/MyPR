@@ -17,6 +17,9 @@ function NavbarComponent({ logout, isAuthenticated, user, loginWithRedirect }) {
             <Nav.Link to="/logs" as={NavLink}>
               Logs
             </Nav.Link>
+            <Nav.Link to="/routines" as={NavLink}>
+              Routines
+            </Nav.Link>
             {isAuthenticated && (
               <NavDropdown title="User" id="basic-nav-dropdown" drop="start">
                 <NavDropdown.Item>Welcome, {user.name}!</NavDropdown.Item>

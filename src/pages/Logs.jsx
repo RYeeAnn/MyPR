@@ -37,29 +37,35 @@ export function Logs() {
     { id: 6, name: 'Chest Press Machine', description: 'Great for beginners to target chest muscles.', category: 'Push day' },
     { id: 7, name: 'Chin-ups', description: 'Similar to pull-ups but with a supinated grip.', category: 'Pull day' },
     { id: 8, name: 'Deadlift', description: 'Full-body exercise targeting back, legs, and grip strength.', category: 'Pull day' },
-    { id: 9, name: 'Dumbbell Flyes', description: 'Isolation exercise for chest muscles.', category: 'Push day' },
-    { id: 10, name: 'Dumbbell Rows', description: 'Isolation exercise for the back.', category: 'Pull day' },
-    { id: 11, name: 'Dumbbell Shoulder Press', description: 'Targets shoulders and triceps.', category: 'Push day' },
-    { id: 12, name: 'Face Pulls', description: 'Targets rear delts, traps, and upper back.', category: 'Pull day' },
-    { id: 13, name: 'Good Mornings', description: 'Strengthens lower back and hamstrings.', category: 'Leg day' },
-    { id: 14, name: 'Hack Squats', description: 'Alternative squat variation.', category: 'Leg day' },
-    { id: 15, name: 'Hammer Curls', description: 'Alternative bicep exercise.', category: 'Pull day' },
-    { id: 16, name: 'Incline Bench Press', description: 'Targets upper chest muscles.', category: 'Push day' },
-    { id: 17, name: 'Lat Pulldowns', description: 'Targets lats and upper back muscles.', category: 'Pull day' },
-    { id: 18, name: 'Leg Curls', description: 'Isolation exercise for hamstring muscles.', category: 'Leg day' },
-    { id: 19, name: 'Leg Press', description: 'Targets quadriceps, hamstrings, and glutes.', category: 'Leg day' },
-    { id: 20, name: 'Leg Extensions', description: 'Isolation exercise for quadriceps.', category: 'Leg day' },
-    { id: 21, name: 'Lunges', description: 'Targets quads, hamstrings, glutes, and calves.', category: 'Leg day' },
-    { id: 22, name: 'Overhead Press', description: 'Targets shoulders, triceps, and upper chest.', category: 'Push day' },
-    { id: 23, name: 'Pull-ups', description: 'Great for building upper body strength and targeting back muscles.', category: 'Pull day' },
-    { id: 24, name: 'Push-ups', description: 'Effective compound exercise for chest, shoulders, and triceps.', category: 'Push day' },
-    { id: 25, name: 'Romanian Deadlifts', description: 'Targets hamstrings and lower back muscles.', category: 'Leg day' },
-    { id: 26, name: 'Seated Cable Rows', description: 'Targets middle and lower back muscles.', category: 'Pull day' },
-    { id: 27, name: 'Squats', description: 'Compound exercise for building lower body strength and muscle mass.', category: 'Leg day' },
-    { id: 28, name: 'Step-ups', description: 'Targets quads, hamstrings, and glutes.', category: 'Leg day' },
-    { id: 29, name: 'Tricep Dips', description: 'Targets triceps and chest muscles.', category: 'Push day' },
-    { id: 30, name: 'Tricep Extensions', description: 'Isolation exercise for triceps.', category: 'Push day' },
+    { id: 9, name: 'Dumbbell Chest Press'},
+    { id: 10, name: 'Dumbbell Chest Press (Incline)'},
+    { id: 11, name: 'Dumbbell Flyes', description: 'Isolation exercise for chest muscles.', category: 'Push day' },
+    { id: 12, name: 'Dumbbell Rows', description: 'Isolation exercise for the back.', category: 'Pull day' },
+    { id: 13, name: 'Dumbbell Shoulder Press', description: 'Targets shoulders and triceps.', category: 'Push day' },
+    { id: 14, name: 'Face Pulls', description: 'Targets rear delts, traps, and upper back.', category: 'Pull day' },
+    { id: 15, name: 'Good Mornings', description: 'Strengthens lower back and hamstrings.', category: 'Leg day' },
+    { id: 16, name: 'Hack Squats', description: 'Alternative squat variation.', category: 'Leg day' },
+    { id: 17, name: 'Hammer Curls', description: 'Alternative bicep exercise.', category: 'Pull day' },
+    { id: 18, name: 'Incline Bench Press', description: 'Targets upper chest muscles.', category: 'Push day' },
+    { id: 19, name: 'Lat Pulldowns', description: 'Targets lats and upper back muscles.', category: 'Pull day' },
+    { id: 20, name: 'Leg Curls', description: 'Isolation exercise for hamstring muscles.', category: 'Leg day' },
+    { id: 21, name: 'Leg Press', description: 'Targets quadriceps, hamstrings, and glutes.', category: 'Leg day' },
+    { id: 22, name: 'Leg Extensions', description: 'Isolation exercise for quadriceps.', category: 'Leg day' },
+    { id: 23, name: 'Lunges', description: 'Targets quads, hamstrings, glutes, and calves.', category: 'Leg day' },
+    { id: 24, name: 'Overhead Press', description: 'Targets shoulders, triceps, and upper chest.', category: 'Push day' },
+    { id: 25, name: 'Pull-ups', description: 'Great for building upper body strength and targeting back muscles.', category: 'Pull day' },
+    { id: 26, name: 'Push-ups', description: 'Effective compound exercise for chest, shoulders, and triceps.', category: 'Push day' },
+    { id: 27, name: 'Romanian Deadlifts', description: 'Targets hamstrings and lower back muscles.', category: 'Leg day' },
+    { id: 28, name: 'Seated Cable Rows', description: 'Targets middle and lower back muscles.', category: 'Pull day' },
+    { id: 29, name: 'Squats', description: 'Compound exercise for building lower body strength and muscle mass.', category: 'Leg day' },
+    { id: 30, name: 'Step-ups', description: 'Targets quads, hamstrings, and glutes.', category: 'Leg day' },
+    { id: 31, name: 'Tricep Dips', description: 'Targets triceps and chest muscles.', category: 'Push day' },
+    { id: 32, name: 'Tricep Extensions', description: 'Isolation exercise for triceps.', category: 'Push day' },
   ];
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     // Fetch logs when the component mounts
@@ -233,7 +239,7 @@ export function Logs() {
 
         <Row>
             <Col className='text-center mb-5'>
-                <Button onClick={handleExport}>Export</Button>
+                {isAuthenticated && <Button onClick={handleExport}>Export</Button>}
             </Col>
         </Row>
 
