@@ -2,16 +2,22 @@
 
 import React, { useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import { Container, Row, Col, Button, Card } from 'react-bootstrap';
+import { Container, Row, Col, Button, Card, Nav } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import bench from '../assets/bench.jpg'
 import deadlift from '../assets/deadlift.jpg'
 import squat from '../assets/squat.jpg';
 
+
 export function Home() {
   const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
   const [selectedWorkouts, setSelectedWorkouts] = useState([]);
+  const [activeCategory, setActiveCategory] = useState('');
+  const [weightConversion, setWeightConversion] = useState('');
+  const [showWeightConversion, setShowWeightConversion] = useState(false);
+  const [convertedWeight, setConvertedWeight] = useState('');
+  const [selectedUnit, setSelectedUnit] = useState('kg');
 
   const workoutExercises = [
     // Push Day Exercises
@@ -51,96 +57,168 @@ export function Home() {
     { id: 30, name: 'Step-ups', description: 'Targets quads, hamstrings, and glutes.', category: 'Leg day' },
   ];
 
-
   const handleCategoryClick = (category) => {
     const workouts = workoutExercises.filter(exercise => exercise.category === category);
     setSelectedWorkouts(workouts);
+    setActiveCategory(category);
   };
 
-  return (
-    <div className="Home">
-      <Navbar logout={logout} isAuthenticated={isAuthenticated} user={user} loginWithRedirect={loginWithRedirect} />
-      <Container className="mt-4">
-        <Row>
-          <Col>
-            <h1 className="heading">Welcome to MyPR</h1>
-          </Col>
-        </Row>
+    // Function to get image based on workout name
+    const getImage = (workoutName) => {
+      switch (workoutName.toLowerCase()) {
+        case 'bench press':
+          return bench;
+        case 'deadlift':
+          return deadlift;
+        case 'squats':
+          return squat;
+        default:
+          return '';
+      }
+    };
 
-        <Row className="text-center mb-5">
-          <Col>
-            <h2 className="subheading">Featured Workouts</h2>
-            <div className="featured-workouts">
-              <Row className="justify-content-center">
-                <Col md={4}>
-                  <Card bg="dark" text="white" className="featured-card">
-                    <Card.Img variant="top" src={bench} />
-                    <Card.Body>
-                      <Card.Title>Bench Press</Card.Title>
-                      <Card.Text>
-                        The bench press is a compound exercise that targets the chest, shoulders, and triceps.
-                      </Card.Text>
-                    </Card.Body>
-                  </Card>
-                </Col>
-                <Col md={4}>
-                  <Card bg="dark" text="white" className="featured-card">
-                    <Card.Img variant="top" src={deadlift} />
-                    <Card.Body>
-                      <Card.Title>DeadLift</Card.Title>
-                      <Card.Text>
-                        The deadlift is a full-body exercise that primarily targets the back, glutes, and hamstrings.
-                      </Card.Text>
-                    </Card.Body>
-                  </Card>
-                </Col>
-                <Col md={4}>
-                  <Card bg="dark" text="white" className="featured-card">
-                    <Card.Img variant="top" src={squat} />
-                    <Card.Body>
-                      <Card.Title>Squat</Card.Title>
-                      <Card.Text>
-                        The squat is a compound exercise that targets the quadriceps, hamstrings, glutes, and lower back.
-                      </Card.Text>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              </Row>
-            </div>
-          </Col>
-        </Row>
+    // Function to render welcome text
+    const renderWelcomeText = () => {
+      return (
+        <div className="text-center">
+          <h2>Welcome to MyPR</h2>
+          <p>Log your personal records and track your progress!</p>
+        </div>
+      );
+    };
 
-        <Row className='text-center mb-5'>
-          <Col>
-            <h2 className="subheading">Log into your account and start logging your PRs!</h2>
-            <Button variant="secondary" as={NavLink} to="/logs" className="log-pr-button">Log PR</Button>
-          </Col>
-        </Row>
+    const handleWeightConversionClick = () => {
+      setSelectedWorkouts([]); // Clear selected workouts
+      setActiveCategory(''); // Clear active category
+      setShowWeightConversion(true); // Show weight conversion input field
+    };
   
-        <Row className='text-center'>
-          <Col className='mb-5'>
-            <h2 className="subheading">Workout Exercises</h2>
-            <div className="exercise-list">
-              <Button variant="secondary" size='lg' onClick={() => handleCategoryClick('Push day')} className="category-button">Push day</Button>{' '}
-              <Button variant="secondary" size='lg' onClick={() => handleCategoryClick('Pull day')} className="category-button">Pull day</Button>{' '}
-              <Button variant="secondary" size='lg' onClick={() => handleCategoryClick('Leg day')} className="category-button">Leg day</Button>{' '}
-              {selectedWorkouts.length > 0 && (
-                <div>
-                  <h3 className="selected-heading">Selected Workouts:</h3>
+    const handleConversionSubmit = (e) => {
+      e.preventDefault();
+      const weight = parseFloat(weightConversion);
+      if (!isNaN(weight)) {
+        let converted = '';
+        if (selectedUnit === 'kg') {
+          // Convert kg to lbs
+          converted = weight * 2.20462;
+          setConvertedWeight(`${weightConversion} kg is approximately ${converted.toFixed(2)} lbs`);
+        } else if (selectedUnit === 'lb') {
+          // Convert lbs to kg
+          converted = weight / 2.20462;
+          setConvertedWeight(`${weightConversion} lbs is approximately ${converted.toFixed(2)} kg`);
+        }
+      } else {
+        setConvertedWeight('Invalid input. Please enter a valid number.');
+      }
+    };
+
+    return (
+      <div className="Home">
+        {/* Navbar component */}
+        <Navbar logout={logout} isAuthenticated={isAuthenticated} user={user} loginWithRedirect={loginWithRedirect} />
+        <Container fluid className="mt-4">
+          <Row className="mt-5">
+            {/* Sidebar */}
+            <div className="sidebar-title">
+              <p>SideBar</p>
+            </div>
+            <Col xs={12} md={6} lg={2} className="mb-4 border-right">
+              <Nav className="flex-column">
+                <Nav.Item>
+                  <Nav.Link onClick={handleWeightConversionClick}>Weight Conversion</Nav.Link>
+                </Nav.Item>
+                <div className="sidebar-title">
+                  <p>Page Directs</p>
+                </div>
+                <Nav.Link to="/logs" as={NavLink}>
+                  Logs
+                </Nav.Link>
+                <Nav.Link to="/routines" as={NavLink}>
+                  Routines
+                </Nav.Link>
+              </Nav>
+              <div className="sidebar-title">
+                <p>Workout Categories</p>
+              </div>
+              <Nav className="flex-column">
+                <Nav.Item>
+                  <Nav.Link onClick={() => handleCategoryClick('Push day')} active={activeCategory === 'Push day'}>
+                    Push day
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link onClick={() => handleCategoryClick('Pull day')} active={activeCategory === 'Pull day'}>
+                    Pull day
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link onClick={() => handleCategoryClick('Leg day')} active={activeCategory === 'Leg day'}>
+                    Leg day
+                  </Nav.Link>
+                </Nav.Item>
+              </Nav>
+            </Col>
+            {/* Display either welcome text or selected workouts */}
+            <Col xs={12} md={6} lg={8}>
+              {activeCategory ? (
+                <Row>
                   {selectedWorkouts.map((workout) => (
-                    <Card key={workout.id} className="workout-card">
-                      <Card.Body>
-                        <Card.Title>{workout.name}</Card.Title>
-                        <Card.Text>{workout.description}</Card.Text>
-                      </Card.Body>
-                    </Card>
+                    <Col key={workout.id} xs={12} md={6} lg={4} className="mb-4">
+                      <Card className="h-100">
+                        <Card.Img variant="top" src={getImage(workout.name)} />
+                        <Card.Body>
+                          <Card.Title>{workout.name}</Card.Title>
+                          <Card.Text>{workout.description}</Card.Text>
+                        </Card.Body>
+                      </Card>
+                    </Col>
                   ))}
+                </Row>
+              ) : (
+                renderWelcomeText()
+              )}
+  
+              {/* Display weight conversion input field if showWeightConversion is true */}
+              {showWeightConversion && (
+                <div className="mt-4 d-flex flex-column justify-content-center align-items-center">
+                  <h4>Weight Conversion</h4>
+                  <form onSubmit={handleConversionSubmit}>
+                    <input
+                      type="text"
+                      value={weightConversion}
+                      onChange={(e) => setWeightConversion(e.target.value)}
+                      placeholder={`Enter weight (${selectedUnit})`}
+                    />
+                    <div>
+                      <label>
+                        <input
+                          type="radio"
+                          value="kg"
+                          checked={selectedUnit === 'kg'}
+                          onChange={() => setSelectedUnit('kg')}
+                        />
+                        kg
+                      </label>
+                      <label>
+                        <input
+                          type="radio"
+                          value="lb"
+                          checked={selectedUnit === 'lb'}
+                          onChange={() => setSelectedUnit('lb')}
+                        />
+                        lb
+                      </label>
+                    </div>
+                    <Button type="submit">Convert</Button>
+                  </form>
+                  {convertedWeight && <p className="mt-2">Converted Weight: {convertedWeight}</p>}
                 </div>
               )}
-            </div>
-          </Col>
-        </Row>
-
-      </Container>
-    </div>
-  )};
+            </Col>
+          </Row>
+        </Container>
+      </div>
+    );
+  }
+  
+  export default Home;
