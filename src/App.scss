@@ -17,74 +17,101 @@
   padding: 1rem;
 }
 
-/* Home.scss */
+/* Home.css */
 
-.heading {
-  text-align: center;
-  font-size: 3rem;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 40px;
-}
-
-.subheading {
-  font-size: 1.5rem;
-  color: #555;
-  margin-bottom: 20px;
-}
-
-.category-button {
-  margin-right: 10px;
-  font-weight: bold;
-}
-
-.selected-heading {
-  font-size: 1.2rem;
-  color: #333;
-  margin-top: 20px;
-  margin-bottom: 10px;
-}
-
-.workout-card {
-  margin-top: 10px;
-  border: 1px solid #ccc;
+.dashboard-card {
+  background-color: #ffffff;
   border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.workout-card .card-body {
-  padding: 20px;
-  gap: 2rem;
+.dashboard-card-title {
+  font-size: 1.5rem;
+  color: #343a40;
 }
 
-.workout-card .card-title {
+.dashboard-card-text {
+  color: #6c757d;
+}
+
+.not-logged-in-message {
   font-size: 1.2rem;
-  color: #333;
-  margin-bottom: 10px;
+  color: #6c757d;
 }
 
-.workout-card .card-text {
-  font-size: 1rem;
-  color: #666;
+.login-button {
+  margin-top: 1rem;
 }
 
-.workout-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.dashboard-button {
+  background-color: #f8f9fa;
+  color: #212529;
+  border: 1px solid #ced4da;
 }
 
-.featured-card {
-  height: 400px; /* Adjust the height as needed */
+.dashboard-button:hover {
+  background-color: #e2e6ea;
+  border-color: #b0b6bb;
 }
 
-.border-right {
-  border-right: 1px solid #e0e0e0; /* Adjust the color and size as needed */
-  height: 100%;
-}
 
 
 /* Logs.scss */
 
 .delete-icon:hover {
   transform: scale(1.2); // Scale up the icon on hover
+}
+
+.log-card {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  opacity: 0; /* Initially hide the card */
+  transform: translateY(20px); /* Move the card down */
+  animation: fadeInUp 0.5s forwards; /* Apply fade-in animation */
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.exercise {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.log-details {
+  flex-grow: 1;
+  padding: 15px;
+}
+
+.log-details > div {
+  margin-bottom: 8px;
+  font-size: 16px;
+  color: #666;
+}
+
+.delete-icon {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.delete-icon:hover {
+  transform: scale(1.1);
 }

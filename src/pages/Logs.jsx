@@ -125,6 +125,7 @@ export function Logs() {
       }
   
       await axios.post('http://localhost:3002/api/log-pr', postData);
+      toast.success("Log submitted successfully");
   
       setExercise('');
       setWeight('');
@@ -135,6 +136,7 @@ export function Logs() {
       fetchLogs();
     } catch (error) {
       console.error('Error logging PR:', error);
+      toast.error("Failed to submit log. Please try again later.");
       setErrorMessage('Failed to log PR. Please try again later.');
     }
   };
@@ -159,88 +161,86 @@ export function Logs() {
     <div className="App">
       <Navbar logout={logout} isAuthenticated={isAuthenticated} user={user} loginWithRedirect={loginWithRedirect} />
       <Container className="mt-4">
-      <Row>
-  <Col>
-    {isAuthenticated && (
-      <Form onSubmit={handleSubmit}>
         <Row>
-          {/* Exercise and Weight */}
-          <Col md={6}>
-            <Form.Group controlId="exercise">
-              <Form.Label>Select Exercise</Form.Label>
-              <Form.Control as="select" value={exercise} onChange={(e) => setExercise(e.target.value)}>
-                <option value="">Select an exercise</option>
-                {workoutExercises.map((exercise) => (
-                  <option key={exercise.id} value={exercise.name}>{exercise.name}</option>
-                ))}
-              </Form.Control>
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group controlId="weight">
-              <Form.Label>Enter Weight (lb or kg)</Form.Label>
-              <Form.Control type="number" value={weight} onChange={(e) => setWeight(e.target.value)} />
-            </Form.Group>
-          </Col>
-        </Row>
-        <Row>
-          {/* Reps and Sets */}
-          <Col md={6}>
-            <Form.Group controlId="reps">
-              <Form.Label>Reps</Form.Label>
-              <Form.Control type="number" value={reps} onChange={(e) => setReps(e.target.value)} />
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group controlId="sets">
-              <Form.Label>Sets</Form.Label>
-              <Form.Control type="number" value={sets} onChange={(e) => setSets(e.target.value)} />
-            </Form.Group>
-          </Col>
-        </Row>
-        <Row>
-          {/* Date */}
           <Col>
-            <Form.Group controlId="date">
-              <Form.Label>Date</Form.Label>
-              <Form.Control type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-            </Form.Group>
+            {isAuthenticated && (
+              <Form onSubmit={handleSubmit}>
+                <Row>
+                  {/* Exercise and Weight */}
+                  <Col md={6}>
+                    <Form.Group controlId="exercise">
+                      <Form.Label>Select Exercise</Form.Label>
+                      <Form.Control as="select" value={exercise} onChange={(e) => setExercise(e.target.value)}>
+                        <option value="">Select an exercise</option>
+                        {/* Render options */}
+                      </Form.Control>
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group controlId="weight">
+                      <Form.Label>Enter Weight (lb or kg)</Form.Label>
+                      <Form.Control type="number" value={weight} onChange={(e) => setWeight(e.target.value)} />
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row>
+                  {/* Reps and Sets */}
+                  <Col md={6}>
+                    <Form.Group controlId="reps">
+                      <Form.Label>Reps</Form.Label>
+                      <Form.Control type="number" value={reps} onChange={(e) => setReps(e.target.value)} />
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group controlId="sets">
+                      <Form.Label>Sets</Form.Label>
+                      <Form.Control type="number" value={sets} onChange={(e) => setSets(e.target.value)} />
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row>
+                  {/* Date */}
+                  <Col>
+                    <Form.Group controlId="date">
+                      <Form.Label>Date</Form.Label>
+                      <Form.Control type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Button variant="secondary" type="submit" style={{ marginTop: '1rem '}}>
+                  Log PR
+                </Button>
+              </Form>
+            )}
           </Col>
         </Row>
-        <Button variant="secondary" type="submit" style={{ marginTop: '1rem '}}>
-          Log PR
-        </Button>
-      </Form>
-    )}
-  </Col>
+
+        <Row className="mt-4">
+  {logs.map((log) => (
+    <Col key={log.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
+      <Card>
+        <Card.Body className="log-card">
+          <div className="exercise">{log.exercise}</div>
+          <div className="log-details">
+            <div>Weight: {log.weight} lbs</div>
+            {log.reps && <div>Reps: {log.reps}</div>}
+            {log.sets && <div>Sets: {log.sets}</div>}
+            <div>Date: {formatDate(log.date)}</div>
+          </div>
+          <div className="delete-icon" onClick={() => handleDelete(log.id)}>
+            <img src={trash} alt="trashcan" className="trash-icon"/>
+          </div>
+        </Card.Body>
+      </Card>
+    </Col>
+  ))}
 </Row>
 
-        
-        <Row className="mt-4">
-          <Col className='mb-5'>
-            <h2>Logged PRs</h2>
-            <div className="logs-list">
-              {logs.map((log, index) => (
-                <Card key={index} className="mb-2">
-                  <Card.Body>
-                  {log.exercise}: {log.weight} {log.reps ? `- ${log.reps} reps` : ''}{log.sets ? `- ${log.sets} sets` : ''}
-                  <div className="date_delete">
-                  {formatDate(log.date)}
-                    <div onClick={() => handleDelete(log.id)} style={{ cursor: 'pointer' }}>
-                        <img src={trash} alt="trashcan" style={{ transition: 'transform 0.2s' }} className="delete-icon"/>
-                    </div>
-                  </div>
-                  </Card.Body>
-                </Card>
-              ))}
-            </div>
-          </Col>
-        </Row>
 
         <Row>
-            <Col className='text-center mb-5'>
-                {isAuthenticated && <Button onClick={handleExport}>Export</Button>}
-            </Col>
+          <Col className='text-center mb-5'>
+            {isAuthenticated && <Button onClick={handleExport}>Export</Button>}
+          </Col>
         </Row>
 
         {errorMessage && (
