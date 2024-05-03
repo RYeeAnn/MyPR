@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
@@ -10,6 +10,8 @@ export function Home() {
   const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
   const [logsData, setLogsData] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const chartRef = useRef(null);
 
   const handleLogout = () => {
     setLoading(true);
@@ -78,7 +80,11 @@ export function Home() {
         },
       },
     });
-  };  
+  };
+
+  const scrollToChart = () => {
+    chartRef.current.scrollIntoView({ behavior: 'smooth'});
+  };
 
   return (
     <div className="Home">
@@ -107,9 +113,9 @@ export function Home() {
                   <Card.Text className="dashboard-card-text">
                     Display recent activity, notifications, or updates here.
                   </Card.Text>
-                  <Button variant="outline-secondary" className="dashboard-button">
+                  <NavLink onClick={scrollToChart} variant="outline-secondary" className="btn dashboard-button">
                     View Activity
-                  </Button>
+                  </NavLink>
                 </Card.Body>
               </Card>
             </Col>
@@ -121,13 +127,22 @@ export function Home() {
           </div>
         )}
 
+        {/* Additional content below the cards */}
+        <Row className="mt-4">
+          <Col>
+            <h2>Additional Content</h2>
+            <p>This is some additional content that you want to display below the cards.</p>
+            <p>You can add any relevant information or features here.</p>
+          </Col>
+        </Row>
+
         {/* Chart component */}
         <Row className="mt-4">
           <Col>
             <Card className="dashboard-card">
               <Card.Body>
                 <Card.Title className="dashboard-card-title">Fitness Progress</Card.Title>
-                <canvas id="myChart" width="400" height="200"></canvas>
+                <canvas id="myChart" ref={chartRef} width="400" height="200"></canvas>
               </Card.Body>
             </Card>
           </Col>
