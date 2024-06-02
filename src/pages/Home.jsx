@@ -3,7 +3,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import Chart from 'chart.js/auto'; // Import Chart from Chart.js
+import Chart from 'chart.js/auto';
 import axios from 'axios';
 
 export function Home() {
@@ -19,7 +19,6 @@ export function Home() {
   };
 
   useEffect(() => {
-    // Fetch logs data when the component mounts
     if (isAuthenticated) {
       fetchLogsData();
     }
@@ -27,10 +26,9 @@ export function Home() {
 
   const fetchLogsData = async () => {
     try {
-      // Fetch logs data from your backend server
       const response = await axios.get('http://localhost:3002/api/logs', {
         params: {
-          userId: user.sub, // Assuming user.sub contains the user's ID
+          userId: user.sub,
         },
       });
       setLogsData(response.data);
@@ -111,7 +109,7 @@ export function Home() {
                 <Card.Body>
                   <Card.Title className="dashboard-card-title">Recent Activity</Card.Title>
                   <Card.Text className="dashboard-card-text">
-                    Display recent activity, notifications, or updates here.
+                    View your progress!
                   </Card.Text>
                   <NavLink onClick={scrollToChart} variant="outline-secondary" className="btn dashboard-button">
                     View Activity
@@ -128,13 +126,12 @@ export function Home() {
         )}
 
         {/* Additional content below the cards */}
-        <Row className="mt-4">
+        {/* <Row className="mt-4">
           <Col>
             <h2>Additional Content</h2>
-            <p>This is some additional content that you want to display below the cards.</p>
-            <p>You can add any relevant information or features here.</p>
+            <p>Additonal Content</p>
           </Col>
-        </Row>
+        </Row> */}
 
         {/* Chart component */}
         <Row className="mt-4">

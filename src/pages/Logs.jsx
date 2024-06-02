@@ -172,6 +172,11 @@ export function Logs() {
                       <Form.Label>Select Exercise</Form.Label>
                       <Form.Control as="select" value={exercise} onChange={(e) => setExercise(e.target.value)}>
                         <option value="">Select an exercise</option>
+                        {workoutExercises.map((exercise) => (
+                          <option key={exercise.id} value={exercise.name}>
+                            {exercise.name}
+                          </option>
+                        ))}
                         {/* Render options */}
                       </Form.Control>
                     </Form.Group>
@@ -216,25 +221,25 @@ export function Logs() {
         </Row>
 
         <Row className="mt-4">
-  {logs.map((log) => (
-    <Col key={log.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
-      <Card>
-        <Card.Body className="log-card">
-          <div className="exercise">{log.exercise}</div>
-          <div className="log-details">
-            <div>Weight: {log.weight} lbs</div>
-            {log.reps && <div>Reps: {log.reps}</div>}
-            {log.sets && <div>Sets: {log.sets}</div>}
-            <div>Date: {formatDate(log.date)}</div>
-          </div>
-          <div className="delete-icon" onClick={() => handleDelete(log.id)}>
-            <img src={trash} alt="trashcan" className="trash-icon"/>
-          </div>
-        </Card.Body>
-      </Card>
-    </Col>
-  ))}
-</Row>
+          {logs.map((log) => (
+            <Col key={log.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
+              <Card>
+                <Card.Body className="log-card">
+                  <div className="exercise">{log.exercise}</div>
+                  <div className="log-details">
+                    <div>Weight: {log.weight} lbs</div>
+                    {log.reps && <div>Reps: {log.reps}</div>}
+                    {log.sets && <div>Sets: {log.sets}</div>}
+                    <div>Date: {formatDate(log.date)}</div>
+                  </div>
+                  <div className="delete-icon" onClick={() => handleDelete(log.id)}>
+                    <img src={trash} alt="trashcan" className="trash-icon"/>
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
 
 
         <Row>
