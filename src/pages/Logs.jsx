@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '../components/Navbar';
 import trash from '../assets/trash.svg';
+import workouts from '../workouts.json';
 import * as XLSX from 'xlsx';
 
 export function Logs() {
@@ -26,46 +27,16 @@ export function Logs() {
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
-  
 
-  const workoutExercises = [
-    { id: 1, name: 'Barbell Rows', description: 'Compound exercise for building back strength.', category: 'Pull day' },
-    { id: 2, name: 'Bench Press', description: 'Strengthen your chest, shoulders, and arms.', category: 'Push day' },
-    { id: 3, name: 'Bent-over Rows', description: 'Targets upper and middle back muscles.', category: 'Pull day' },
-    { id: 4, name: 'Cable Flyes', description: 'Alternative isolation exercise for chest muscles.', category: 'Push day' },
-    { id: 5, name: 'Calf Raises', description: 'Targets calf muscles for growth and strength.', category: 'Leg day' },
-    { id: 6, name: 'Chest Press Machine', description: 'Great for beginners to target chest muscles.', category: 'Push day' },
-    { id: 7, name: 'Chin-ups', description: 'Similar to pull-ups but with a supinated grip.', category: 'Pull day' },
-    { id: 8, name: 'Deadlift', description: 'Full-body exercise targeting back, legs, and grip strength.', category: 'Pull day' },
-    { id: 9, name: 'Dumbbell Chest Press'},
-    { id: 10, name: 'Dumbbell Chest Press (Incline)'},
-    { id: 11, name: 'Dumbbell Flyes', description: 'Isolation exercise for chest muscles.', category: 'Push day' },
-    { id: 12, name: 'Dumbbell Rows', description: 'Isolation exercise for the back.', category: 'Pull day' },
-    { id: 13, name: 'Dumbbell Shoulder Press', description: 'Targets shoulders and triceps.', category: 'Push day' },
-    { id: 14, name: 'Face Pulls', description: 'Targets rear delts, traps, and upper back.', category: 'Pull day' },
-    { id: 15, name: 'Good Mornings', description: 'Strengthens lower back and hamstrings.', category: 'Leg day' },
-    { id: 16, name: 'Hack Squats', description: 'Alternative squat variation.', category: 'Leg day' },
-    { id: 17, name: 'Hammer Curls', description: 'Alternative bicep exercise.', category: 'Pull day' },
-    { id: 18, name: 'Incline Bench Press', description: 'Targets upper chest muscles.', category: 'Push day' },
-    { id: 19, name: 'Lat Pulldowns', description: 'Targets lats and upper back muscles.', category: 'Pull day' },
-    { id: 20, name: 'Leg Curls', description: 'Isolation exercise for hamstring muscles.', category: 'Leg day' },
-    { id: 21, name: 'Leg Press', description: 'Targets quadriceps, hamstrings, and glutes.', category: 'Leg day' },
-    { id: 22, name: 'Leg Extensions', description: 'Isolation exercise for quadriceps.', category: 'Leg day' },
-    { id: 23, name: 'Lunges', description: 'Targets quads, hamstrings, glutes, and calves.', category: 'Leg day' },
-    { id: 24, name: 'Overhead Press', description: 'Targets shoulders, triceps, and upper chest.', category: 'Push day' },
-    { id: 25, name: 'Pull-ups', description: 'Great for building upper body strength and targeting back muscles.', category: 'Pull day' },
-    { id: 26, name: 'Push-ups', description: 'Effective compound exercise for chest, shoulders, and triceps.', category: 'Push day' },
-    { id: 27, name: 'Romanian Deadlifts', description: 'Targets hamstrings and lower back muscles.', category: 'Leg day' },
-    { id: 28, name: 'Seated Cable Rows', description: 'Targets middle and lower back muscles.', category: 'Pull day' },
-    { id: 29, name: 'Squats', description: 'Compound exercise for building lower body strength and muscle mass.', category: 'Leg day' },
-    { id: 30, name: 'Step-ups', description: 'Targets quads, hamstrings, and glutes.', category: 'Leg day' },
-    { id: 31, name: 'Tricep Dips', description: 'Targets triceps and chest muscles.', category: 'Push day' },
-    { id: 32, name: 'Tricep Extensions', description: 'Isolation exercise for triceps.', category: 'Push day' },
-  ];
+
+  // data from json file
+  const workoutExercises = workouts;
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
 
   useEffect(() => {
     // Fetch logs when the component mounts
@@ -78,7 +49,6 @@ export function Logs() {
     try {
       const response = await axios.get('http://localhost:3002/api/logs', { params: { userId } });
       const newLogs = response.data;
-  
       const filteredLogs = newLogs.filter(newLog => !logs.find(log => log.id === newLog.id));
       const sortedLogs = [...filteredLogs, ...logs].sort((a, b) => b.id - a.id);
   
@@ -87,6 +57,11 @@ export function Logs() {
       console.error('Error fetching logs:', error);
     }
   };
+
+
+
+
+
   
   const handleDelete = async (logId) => {
     try {
@@ -99,6 +74,11 @@ export function Logs() {
     }
   };
 
+
+
+
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -108,14 +88,12 @@ export function Logs() {
       const month = String(currentDate.getMonth() + 1).padStart(2, '0');
       const day = String(currentDate.getDate()).padStart(2, '0');
       const formattedDate = `${year}-${month}-${day}`;
-  
       const postData = {
         exercise,
         weight,
         userId,
         date: formattedDate // Add the formatted date to the postData
       };
-  
       // Remove conditionals for sets and reps
       if (sets) {
         postData.sets = sets;
@@ -123,16 +101,13 @@ export function Logs() {
       if (reps) {
         postData.reps = reps;
       }
-  
       await axios.post('http://localhost:3002/api/log-pr', postData);
       toast.success("Log submitted successfully");
-  
       setExercise('');
       setWeight('');
       setReps('');
       setSets('');
       setDate(formattedDate); // Set the date state variable
-  
       fetchLogs();
     } catch (error) {
       console.error('Error logging PR:', error);
@@ -140,6 +115,11 @@ export function Logs() {
       setErrorMessage('Failed to log PR. Please try again later.');
     }
   };
+
+
+
+
+
 
     const handleExport = () => {
         const data = logs.map((log) => ({
@@ -153,7 +133,6 @@ export function Logs() {
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.json_to_sheet(data);
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Logs');
-
     XLSX.writeFile(workbook, 'logs.xlsx');
   };
 
